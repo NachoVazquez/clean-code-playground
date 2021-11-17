@@ -12,25 +12,12 @@ const useChoresState = () => {
 
   const completeChore = async (choreId: string) => {
     const chore = uncompletedChores.find((chore) => chore.id === choreId);
+
     if (chore) {
       setUncompletedChores(
         uncompletedChores.filter((chore) => chore.id !== choreId)
       );
       setCompletedChores([...completedChores, { ...chore, completed: true }]);
-
-      try {
-        await fetch(`/api/chores/${choreId}/complete`, {
-          method: "POST",
-        });
-      } catch (error) {
-        setCompletedChores(
-          completedChores.filter((chore) => chore.id !== choreId)
-        );
-        setUncompletedChores([
-          ...uncompletedChores,
-          { ...chore, completed: false },
-        ]);
-      }
     }
   };
 
@@ -44,17 +31,6 @@ const useChoresState = () => {
         ...uncompletedChores,
         { ...chore, completed: false },
       ]);
-
-      try {
-        fetch(`/api/chores/${choreId}/uncomplete`, {
-          method: "POST",
-        });
-      } catch (error) {
-        setCompletedChores([...completedChores, { ...chore, completed: true }]);
-        setUncompletedChores(
-          uncompletedChores.filter((chore) => chore.id !== choreId)
-        );
-      }
     }
   };
 

@@ -17,7 +17,7 @@ export default function Chores() {
       setUncompletedChores(
         uncompletedChores.filter((chore) => chore.id !== choreId)
       );
-      setCompletedChores([...completedChores, chore]);
+      setCompletedChores([...completedChores, { ...chore, completed: true }]);
 
       try {
         await fetch(`/api/chores/${choreId}/complete`, {
@@ -27,7 +27,10 @@ export default function Chores() {
         setCompletedChores(
           completedChores.filter((chore) => chore.id !== choreId)
         );
-        setUncompletedChores([...uncompletedChores, chore]);
+        setUncompletedChores([
+          ...uncompletedChores,
+          { ...chore, completed: false },
+        ]);
       }
     }
   };
@@ -38,14 +41,17 @@ export default function Chores() {
       setCompletedChores(
         completedChores.filter((chore) => chore.id !== choreId)
       );
-      setUncompletedChores([...uncompletedChores, chore]);
+      setUncompletedChores([
+        ...uncompletedChores,
+        { ...chore, completed: false },
+      ]);
 
       try {
         fetch(`/api/chores/${choreId}/uncomplete`, {
           method: "POST",
         });
       } catch (error) {
-        setCompletedChores([...completedChores, chore]);
+        setCompletedChores([...completedChores, { ...chore, completed: true }]);
         setUncompletedChores(
           uncompletedChores.filter((chore) => chore.id !== choreId)
         );
